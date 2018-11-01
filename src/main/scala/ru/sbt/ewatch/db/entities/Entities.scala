@@ -45,7 +45,8 @@ object Entities {
                     deviceId: String,
                     power: Double,
                     current: Double,
-                    voltage: Double)
+                    voltage: Double,
+                    consumption: Double)
 
   class Metrics(tag: Tag) extends Table[Metric](tag, "METRICS") {
     def datetime = column[Timestamp]("DATE")
@@ -53,10 +54,13 @@ object Entities {
     def power = column[Double]("POWER")
     def current = column[Double]("CURRENT")
     def voltage = column[Double]("VOLTAGE")
+    def consumption = column[Double]("CONSUMPTION")
 
-    def * = (datetime, deviceId, power, current, voltage).mapTo[Metric]
+    def * = (datetime, deviceId, power, current, voltage, consumption).mapTo[Metric]
   }
 
+  val metrics = lifted.TableQuery[Metrics]
 
+  val allTableNames = List(devices, users, metrics)
 
 }

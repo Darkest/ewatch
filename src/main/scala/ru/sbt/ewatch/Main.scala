@@ -2,7 +2,6 @@ package ru.sbt.ewatch
 
 
 import com.twitter.finagle.Http
-import org.apache.camel.component.mqtt.MQTTComponent
 import org.apache.camel.component.websocket.WebsocketComponent
 import org.apache.camel.impl.DefaultCamelContext
 import ru.sbt.ewatch.db.entities.Entities.{Device, User, devices, _}
@@ -26,8 +25,8 @@ object Main extends App {
     (devices.schema ++ users.schema).create,
     users += User(1,"Ivan"),
     users += User(2, "Dmitry"),
-    devices += Device("11", 1, "Kitchen"),
-    devices += Device("12", 1, "Room")
+    devices += Device("Bulb1", 1, "Kitchen"),
+    devices += Device("Sin1", 1, "Room")
   )
 
   Await.result(db.run(dbInit), Duration.Inf)

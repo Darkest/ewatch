@@ -6,4 +6,5 @@ case class Status(time: Timestamp,
                   deviceName: String,
                   power: Double,
                   voltage: Double,
-                  current: Double)
+                  current: Double,
+                  consumption: Double)

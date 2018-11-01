@@ -6,9 +6,16 @@ import org.apache.camel.impl.DefaultCamelContext
 
 object Main extends App {
 
-  def plainPower(n: Long) = {
+  def WsToKWh(ws: Double): Double = {
+    ws/1000/3600
+  }
+
+  def bulb(n: Long) = {
     val timestamp = new Timestamp(System.currentTimeMillis)
-    val data = Status(timestamp, "", 60.0, 235.0, 0.5)
+    val P = 60
+    val V = randomVoltageBetween220_240
+    val A = P/V
+    val data = Status(timestamp, "", P, V, A, WsToKWh(V*A))
     data
   }
 
@@ -22,13 +29,17 @@ object Main extends App {
     val P = math.sin(n.toDouble/180/math.Pi)
     val V = randomVoltageBetween220_240
     val A = P/V
-    val data = Status(timestamp, "", P, V, A)
+    val data = Status(timestamp, "", P, V, A, WsToKWh(V*A))
     data
   }
 
   val camelContext = new DefaultCamelContext()
-  camelContext.addRoutes(CamelPublisher.publisher(plainPower, "Bulb60"))
-  camelContext.addRoutes(CamelPublisher.publisher(sinPower, "Sin"))
+  camelContext.addRoutes(CamelPublisher.publisher(bulb, "Bulb1"))
+  camelContext.addRoutes(CamelPublisher.publisher(bulb, "Bulb2"))
+  camelContext.addRoutes(CamelPublisher.publisher(bulb, "Bulb3"))
+  camelContext.addRoutes(CamelPublisher.publisher(sinPower, "Sin1"))
+  camelContext.addRoutes(CamelPublisher.publisher(sinPower, "Sin2"))
+  camelContext.addRoutes(CamelPublisher.publisher(sinPower, "Sin3"))
   camelContext.start()
 
   println("Camel started")
