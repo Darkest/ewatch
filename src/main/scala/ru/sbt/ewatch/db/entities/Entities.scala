@@ -41,14 +41,22 @@ object Entities {
 
   case class Device(id: String, userId: Long, name: String)
 
-  case class Power(datetime: Timestamp, deviceId: String, value: Int)
+  case class Metric(datetime: Timestamp,
+                    deviceId: String,
+                    power: Double,
+                    current: Double,
+                    voltage: Double)
 
-  class PowerMetrics(tag: Tag) extends Table[Power](tag, "POWERS") {
+  class Metrics(tag: Tag) extends Table[Metric](tag, "METRICS") {
     def datetime = column[Timestamp]("DATE")
     def deviceId = column[String]("DEVICE_ID")
-    def value = column[Int]("VALUE")
+    def power = column[Double]("POWER")
+    def current = column[Double]("CURRENT")
+    def voltage = column[Double]("VOLTAGE")
 
-    def * = (datetime, deviceId, value).mapTo[Power]
+    def * = (datetime, deviceId, power, current, voltage).mapTo[Metric]
   }
+
+
 
 }
