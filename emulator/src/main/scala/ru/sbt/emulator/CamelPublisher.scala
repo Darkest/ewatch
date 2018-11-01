@@ -14,21 +14,21 @@ object CamelPublisher {
 
   type dataGen = Long => Status
 
-  def publisher(gen: dataGen, name: String) = {
+  def publisher(gen: dataGen, deviceName: String) = {
     new RouteBuilder() {
       val procGen = new Processor {
         override def process(exchange: Exchange): Unit = {
-          val n = exchange.getProperty("Exchange.TIMER_COUNTER").asInstanceOf[Long]
+          val n = exchange.getProperty(Exchange.TIMER_COUNTER).asInstanceOf[Long]
           val status = gen(n)
           println(s"Ready to send - $status")
           val os = new ByteArrayOutputStream()
-          mapper.writeValue(os, status)
+          mapper.writeValue(os, status.copy(deviceName = deviceName))
           exchange.getIn.setBody(new String(os.toByteArray))
         }
       }
 
       override def configure(): Unit = {
-        from(s"timer:timer_$name?period=1000").process(procGen).marshal().json(JsonLibrary.Jackson).to(s"mqtt://power_$name?host=tcp://138.68.155.35:1883&publishTopicName=$name")
+        from(s"timer:timer_$deviceName?period=1000").process(procGen).marshal().json(JsonLibrary.Jackson).to(s"mqtt://power_$deviceName?host=tcp://138.68.155.35:1883&publishTopicName=$deviceName")
       }
     }
   }
