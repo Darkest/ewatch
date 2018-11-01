@@ -2,6 +2,8 @@ package ru.sbt.ewatch
 
 
 import com.twitter.finagle.Http
+import org.apache.camel.component.mqtt.MQTTComponent
+import org.apache.camel.component.websocket.WebsocketComponent
 import org.apache.camel.impl.DefaultCamelContext
 import ru.sbt.ewatch.db.entities.Entities.{Device, User, devices, _}
 import ru.sbt.ewatch.server.http.Services
@@ -15,7 +17,8 @@ import scala.concurrent.duration.Duration
 object Main extends App {
   val camelContext = new DefaultCamelContext()
   camelContext.addRoutes(CamelRoutes.powerRoute("testTopic"))
-
+  camelContext.getComponent("websocket", classOf[WebsocketComponent]).setMaxThreads(50)
+  camelContext.start()
 
   implicit val db:DatabaseDef = Database.forConfig("h2mem").asInstanceOf[DatabaseDef]
 
