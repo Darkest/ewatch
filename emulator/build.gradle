@@ -1,0 +1,51 @@
+group 'ru.sbt.hack'
+version '1.0-SNAPSHOT'
+
+buildscript {
+    repositories {
+        mavenCentral()
+        //maven { url "$public_nexus" }
+    }
+
+    dependencies {
+        classpath "$scalatest_gradle"
+    }
+}
+
+apply plugin: 'scala'
+apply plugin: 'com.github.maiflai.scalatest'
+
+
+repositories {
+    mavenCentral()
+    //maven{ url "$public_nexus"}
+}
+
+dependencies {
+    //  scala
+    // https://mvnrepository.com/artifact/org.scala-lang/scala-library
+    compile group: 'org.scala-lang', name: 'scala-library', version: '2.12.4'
+
+    implementation  "$scala_compiler"
+    implementation  "$scala_xml"
+
+    implementation 'com.typesafe.slick:slick_2.12:3.2.2'
+
+    implementation "$finch_core"
+    implementation "$finch_circe"
+    implementation "$finagle_http"
+    implementation "$circe_generic"
+
+    // https://mvnrepository.com/artifact/org.apache.camel/camel-core
+    implementation group: 'org.apache.camel', name: 'camel-core', version: '2.22.1'
+    // https://mvnrepository.com/artifact/org.apache.camel/camel-mqtt
+    implementation group: 'org.apache.camel', name: 'camel-mqtt', version: '2.22.1'
+    // https://mvnrepository.com/artifact/org.apache.camel/camel-mqtt
+    implementation group: 'org.apache.camel', name: 'camel-jackson', version: '2.22.1'
+    // https://mvnrepository.com/artifact/ch.qos.logback/logback-classic
+    implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
+    
+
+
+    implementation "$h2db"
+}

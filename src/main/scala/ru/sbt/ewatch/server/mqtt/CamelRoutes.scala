@@ -18,7 +18,7 @@ object CamelRoutes {
       }
 
       override def configure(): Unit =
-        from(s"mqtt://power?subscribeTopicNames=$topics").unmarshal().json(JsonLibrary.Jackson).process(addNewPowerValue)
+        from(s"mqtt://power?host=tcp://138.68.155.35:1883&subscribeTopicNames=$topics").unmarshal().json(JsonLibrary.Jackson).process(addNewPowerValue)
     }
   }
 
